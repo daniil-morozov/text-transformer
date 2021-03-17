@@ -36,7 +36,6 @@ public class AppResultWriterImpl implements AppResultWriter {
 
                 try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
                     writer.write(text);
-                    writer.flush();
                 }
             } catch (IOException e) {
                 LOGGER.warning(e.getMessage());
