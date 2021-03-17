@@ -1,20 +1,20 @@
 package commandline;
 
-public class Out {
+public class AppOut {
     private final Kind kind;
     private final String dst;
 
-    private Out(Kind kind, String dst) {
+    private AppOut(Kind kind, String dst) {
         this.kind = kind;
         this.dst = dst;
     }
 
-    public static Out createFileType(String dst) {
-        return new Out(Kind.FILE, dst);
+    public static AppOut createFileType(String dst) {
+        return new AppOut(Kind.FILE, dst);
     }
 
-    public static Out createStandard() {
-        return new Out(Kind.STANDARD, null);
+    public static AppOut createStandard() {
+        return new AppOut(Kind.STANDARD, null);
     }
 
     public Kind getKind() {

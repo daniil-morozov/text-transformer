@@ -1,11 +1,13 @@
-package commandline;
+package base;
 
 import base.ConverterCommand;
+import commandline.AppInput;
+import commandline.AppOut;
 
 import java.util.List;
 
 public interface AbstractAppContext {
-    Input getInput();
+    AppInput getInput();
     List<ConverterCommand<String, String>> getCommands();
-    Out getOutput();
+    AppOut getOutput();
 }

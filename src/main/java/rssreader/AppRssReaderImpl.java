@@ -2,7 +2,7 @@ package rssreader;
 
 import com.apptastic.rssreader.Item;
 import com.apptastic.rssreader.RssReader;
-import commandline.Input;
+import commandline.AppInput;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -19,28 +19,28 @@ public class AppRssReaderImpl implements AppRssReader {
             .getClass().getName());
 
     private final RssReader rssReader = new RssReader();
-    private final Input input;
+    private final AppInput appInput;
 
-    private AppRssReaderImpl(Input input) {
-        this.input = input;
+    private AppRssReaderImpl(AppInput appInput) {
+        this.appInput = appInput;
     }
 
-    public static AppRssReaderImpl of(Input input) {
-        return new AppRssReaderImpl(input);
+    public static AppRssReaderImpl of(AppInput appInput) {
+        return new AppRssReaderImpl(appInput);
     }
 
     @Override
     public List<RssItem> read() {
         Stream<Item> rssContent = Stream.empty();
 
-        if (input.getKind() == Input.Kind.URL) {
+        if (appInput.getKind() == AppInput.Kind.URL) {
             try {
-                rssContent = rssReader.read(input.getSrc());
+                rssContent = rssReader.read(appInput.getSrc());
             } catch (IOException e) {
                 LOGGER.warning(e.getMessage());
             }
-        } else if (input.getKind() == Input.Kind.FILE) {
-            File initialFile = new File(input.getSrc());
+        } else if (appInput.getKind() == AppInput.Kind.FILE) {
+            File initialFile = new File(appInput.getSrc());
             try {
                 InputStream targetStream = new FileInputStream(initialFile);
                 rssContent = rssReader.read(targetStream);

@@ -1,23 +1,24 @@
 package commandline;
 
+import base.AbstractAppContext;
 import base.ConverterCommand;
 
 import java.util.List;
 
 public class AppContext implements AbstractAppContext {
-    private final Input input;
-    private final Out output;
+    private final AppInput appInput;
+    private final AppOut output;
     private final List<ConverterCommand<String, String>> commands;
 
-    public AppContext(Input input, List<ConverterCommand<String, String>> commands, Out output) {
-        this.input = input;
+    public AppContext(AppInput appInput, List<ConverterCommand<String, String>> commands, AppOut output) {
+        this.appInput = appInput;
         this.output = output;
         this.commands = commands;
     }
 
     @Override
-    public Input getInput() {
-        return input;
+    public AppInput getInput() {
+        return appInput;
     }
 
     @Override
@@ -26,7 +27,7 @@ public class AppContext implements AbstractAppContext {
     }
 
     @Override
-    public Out getOutput() {
+    public AppOut getOutput() {
         return output;
     }
 }

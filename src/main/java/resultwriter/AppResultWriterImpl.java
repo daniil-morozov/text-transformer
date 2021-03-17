@@ -1,6 +1,6 @@
 package resultwriter;
 
-import commandline.Out;
+import commandline.AppOut;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -12,21 +12,21 @@ public class AppResultWriterImpl implements AppResultWriter {
     private static final Logger LOGGER = Logger.getLogger(AppResultWriterImpl.class
             .getClass().getName());
 
-    private final Out output;
+    private final AppOut output;
 
-    private AppResultWriterImpl(Out output) {
+    private AppResultWriterImpl(AppOut output) {
         this.output = output;
     }
 
-    public static AppResultWriterImpl of(Out output) {
+    public static AppResultWriterImpl of(AppOut output) {
         return new AppResultWriterImpl(output);
     }
 
     @Override
     public void write(String text) {
-        if (output.getKind() == Out.Kind.STANDARD) {
+        if (output.getKind() == AppOut.Kind.STANDARD) {
             System.out.println(text);
-        } else if (output.getKind() == Out.Kind.FILE) {
+        } else if (output.getKind() == AppOut.Kind.FILE) {
             try {
                 File file = new File(output.getDst());
 

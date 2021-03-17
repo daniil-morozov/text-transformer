@@ -5,14 +5,14 @@ import org.mockito.Mockito;
 
 import static org.junit.Assert.*;
 
-public class OutTest {
+public class AppOutTest {
 
     @Test
     public void Test_getters() {
-        final Out.Kind kind = Out.Kind.FILE;
+        final AppOut.Kind kind = AppOut.Kind.FILE;
         final String dst = "test";
 
-        final Out output = Mockito.mock(Out.class);
+        final AppOut output = Mockito.mock(AppOut.class);
         Mockito.when(output.getKind()).thenReturn(kind);
         Mockito.when(output.getDst()).thenReturn(dst);
 

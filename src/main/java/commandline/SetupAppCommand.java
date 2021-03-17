@@ -5,6 +5,8 @@ import com.github.rvesse.airline.HelpOption;
 import com.github.rvesse.airline.annotations.Command;
 import com.github.rvesse.airline.annotations.Option;
 import com.github.rvesse.airline.annotations.OptionType;
+import commandline.utils.CommandParser;
+import commandline.utils.InputOutputKindParser;
 import resultwriter.AppResultWriter;
 import resultwriter.AppResultWriterImpl;
 import rssreader.AppRssReader;
@@ -17,16 +19,13 @@ import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Command(name = "setup-app", description = "RSS source: URL or file")
 public class SetupAppCommand implements Runnable {
-    public static final String REPLACE = "replace/(.*)/(.*)/";
-    public static final Pattern PATTERN = Pattern.compile(REPLACE);
-    public static final String UZABASE = "uzabase";
-    public static final String UZABASE_INC = "Uzabase, Inc";
     @Inject
     private HelpOption<SetupAppCommand> help;
 
@@ -60,13 +59,8 @@ public class SetupAppCommand implements Runnable {
             return;
         }
 
-        Input input;
-
-        if (inputSrc.endsWith(".txt")) {
-            input = new Input(Input.Kind.FILE, inputSrc);
-        } else {
-            input = new Input(Input.Kind.URL, inputSrc);
-        }
+        AppInput appInput = InputOutputKindParser.parseInput(inputSrc);
+        Objects.requireNonNull(appInput);
 
         LOGGER.info("Source=" + inputSrc);
 
@@ -76,39 +70,16 @@ public class SetupAppCommand implements Runnable {
             return;
         }
 
-        final List<ConverterCommand<String, String>> commands = new ArrayList<>();
+        final List<ConverterCommand<String, String>> commands = CommandParser.parse(converts);
 
-        for (String convert : converts) {
-            switch (convert) {
-                case "cut":
-                    commands.add(TextConverter.of(ConverterStrategy.makeTrimStrategyDefaultSizeTen()));
-                    break;
-                case "cut,convert":
-                    commands.add(TextConverter.of(ConverterStrategy.makeTrimStrategyDefaultSizeTen()));
-                    commands.add(TextConverter.of(ConverterStrategy.makeReplaceStrategy(UZABASE, UZABASE_INC)));
-                    break;
-                default:
-                    Matcher matcher = PATTERN.matcher(convert);
-
-                    if (matcher.matches()) {
-                        commands.add(TextConverter.of(ConverterStrategy.makeReplaceStrategy(matcher.group(1),
-                                matcher.group(2))));
-                    }
-                    break;
-            }
-        }
         LOGGER.info("CONVERTERS=" + Arrays.toString(converts.toArray()));
 
-        Out output;
-        if (outputDst != null) {
-            output = Out.createFileType(outputDst);
-        } else {
-            output = Out.createStandard();
-        }
+        AppOut output = InputOutputKindParser.parseOutput(outputDst);
+        Objects.requireNonNull(output);
 
         LOGGER.info("Destination=" + outputDst);
 
-        final AppContext context = new AppContext(input, commands, output);
+        final AppContext context = new AppContext(appInput, commands, output);
         final AppRssReader reader = AppRssReaderImpl.of(context.getInput());
         final List<RssItem> rssItems = reader.read();
 

@@ -1,12 +1,12 @@
 package commandline;
 
 
-public class Input {
+public class AppInput {
 
     private final Kind kind;
     private final String src;
 
-    public Input(Kind kind, String src) {
+    public AppInput(Kind kind, String src) {
         this.kind = kind;
         this.src = src;
     }
