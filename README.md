@@ -46,7 +46,7 @@ Go to the cloned repo folder
 .gradlew build
 # Change dir
 cd build/libs/
-For help run
+# For help run
 java -jar text-transformer-1.0-SNAPSHOT-all.jar setup-app --help # this will tell you how to use the app arguments
 # Run the fat jar. Examples
 java -jar text-transformer-1.0-SNAPSHOT-all.jar setup-app -i <input.txt>  -c <replace/aaa/bbb/> -o=<output.txt> # text input, text output
