@@ -1,0 +1,38 @@
+plugins {
+    id 'java'
+    id 'idea'
+    id "com.github.johnrengelman.shadow" version "5.2.0"
+}
+
+group 'com.morozov'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+    jcenter()
+}
+
+dependencies {
+    compile 'junit:junit:4.12'
+
+    implementation 'com.apptastic:rssreader:2.4.1'
+    implementation 'org.mockito:mockito-core:3.8.0'
+    implementation 'com.github.rvesse:airline:2.8.1'
+}
+
+
+jar {
+    manifest {
+        attributes(
+                'Main-Class': 'Main'
+        )
+    }
+}
+
+shadowJar {
+    manifest {
+        attributes('Main-Class': 'Main')
+    }
+}
+
+tasks.build.dependsOn tasks.shadowJar
